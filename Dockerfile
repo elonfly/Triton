@@ -31,6 +31,8 @@ ENV VIRTUAL_ENV=/Triton-venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
+RUN . $VIRTUAL_ENV/bin/activate
+
 # cmake >= 3.20
 # libz3 >= 4.13.0
 RUN python3 -m pip install --upgrade pip && \
@@ -48,8 +50,9 @@ RUN echo "[+] Download, build and install Capstone" && \
     curl -s -o capstone-5.0.1.tar.gz -L https://github.com/aquynh/capstone/archive/5.0.1.tar.gz && \
     tar xf capstone-5.0.1.tar.gz && \
     cd ./capstone-5.0.1 && \
-    CAPSTONE_ARCHS="arm aarch64 riscv x86" ./make.sh && \
-    make install
+    cmake -B build -DBUILD_SHARED_LIBS=ON -GNinja && \
+    cd build && \
+    ninja install
 
 # libbitwuzla >= 0.4.0
 RUN echo "[+] Download, build and install Bitwuzla" && \
@@ -66,7 +69,7 @@ RUN echo "[+] Build and install Triton" && \
     cd /Triton && \
     mkdir /tmp/triton-build && \
     cd /tmp/triton-build && \
-    cmake \
+    cmake -S /Triton -GNinja \
         -DLLVM_INTERFACE=ON \
         -DCMAKE_PREFIX_PATH=$(llvm-config-16 --prefix) \
         -DZ3_INTERFACE=ON \
@@ -74,10 +77,8 @@ RUN echo "[+] Build and install Triton" && \
         -DZ3_LIBRARIES=$Z3_PATH/lib/libz3.so \
         -DBITWUZLA_INTERFACE=ON \
         -DBITWUZLA_INCLUDE_DIRS=/usr/local/include \
-        -DBITWUZLA_LIBRARIES=/usr/local/lib/x86_64-linux-gnu/libbitwuzla.so \
-        /Triton && \
-    make -j$(nproc) && \
-    make install
+        -DBITWUZLA_LIBRARIES=/usr/local/lib/x86_64-linux-gnu/libbitwuzla.so && \
+    ninja -j$(nproc) install
 
 RUN echo "[+] Check Triton build" && \
     echo export "PATH=$VIRTUAL_ENV/bin:$PATH" >> /etc/bash.bashrc && \
