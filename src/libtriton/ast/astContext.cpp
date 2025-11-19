@@ -353,7 +353,9 @@ namespace triton {
           return this->bv(expr2->getBitvectorMask(), expr2->getBitvectorSize());
 
         /* Optimization: A | A = A */
-        if (expr1->equalTo(expr2))
+        /* Only apply when both operands are concrete. Two different symbolic expressions
+         * may evaluate to the same value but represent distinct computations. */
+        if (!expr1->isSymbolized() && !expr2->isSymbolized() && expr1->equalTo(expr2))
           return expr1;
       }
 
@@ -603,7 +605,9 @@ namespace triton {
           return this->bvneg(expr2);
 
         /* Optimization: A - A = 0 */
-        if (expr1->equalTo(expr2))
+        /* Only apply when both operands are concrete to preserve symbolic information.
+         * Different symbolic expressions may evaluate equal but must remain distinct. */
+        if (!expr1->isSymbolized() && !expr2->isSymbolized() && expr1->equalTo(expr2))
           return this->bv(0, expr1->getBitvectorSize());
       }
 
@@ -732,7 +736,10 @@ namespace triton {
           return expr2;
 
         /* Optimization: A ^ A = 0 */
-        if (expr1->equalTo(expr2))
+        /* Only apply when both operands are concrete to avoid losing symbolic information.
+         * Two different symbolic expressions may have the same concrete value temporarily,
+         * but they represent different symbolic computations that must be preserved. */
+        if (!expr1->isSymbolized() && !expr2->isSymbolized() && expr1->equalTo(expr2))
           return this->bv(0, expr1->getBitvectorSize());
       }
 
