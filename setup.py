@@ -202,7 +202,10 @@ class CMakeBuild(build_ext):
             src_filename = os.path.join(self.build_temp + '/src/libtriton', 'libtriton.dylib')
             dst_filename = os.path.join(self.build_lib, os.path.basename(filename))
         elif platform.system() == "Windows":
-            src_filename = os.path.join(self.build_temp + '\\src\\libtriton\\', 'triton.pyd')
+            if BUILDTOOLS == vs2022:
+                src_filename = os.path.join(self.build_temp + '/src/libtriton/' + CMAKE_BUILD_TYPE, 'triton.pyd')
+            else:
+                src_filename = os.path.join(self.build_temp + '/src/libtriton', 'triton.pyd')
             dst_filename = os.path.join(self.build_lib, os.path.basename(filename))
         else:
             raise Exception(f'Platform not supported: {platform.system()}')
