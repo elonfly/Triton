@@ -20,11 +20,23 @@ from setuptools.command.build_ext import build_ext
 VERSION_MAJOR = 1
 VERSION_MINOR = 0
 VERSION_PATCH = 0
+ON = "ON"
+OFF = "OFF"
+
+clang = "clang" 
+clang_cl = "clang_cl"
+vs2022 = "vs2022"
+Release = "Release"
+Debug = "Debug"
 
 RELEASE_CANDIDATE = 4
+Z3_INTERFACE = ON
+LLVM_INTERFACE = OFF
+BITWUZLA_INTERFACE = OFF
+BOOST_INTERFACE = OFF
 
-BUILDTOOLS = "vs2022" # clang or clang_cl or vs2022
-CMAKE_BUILD_TYPE = "Release" # Release or Debug
+BUILDTOOLS = vs2022 # clang or clang_cl or vs2022
+CMAKE_BUILD_TYPE = Release # Release or Debug
 
 VERSION = f'{VERSION_MAJOR}.{VERSION_MINOR}.{VERSION_PATCH}' + \
             f'rc{RELEASE_CANDIDATE}' if RELEASE_CANDIDATE else ''
@@ -73,7 +85,7 @@ class CMakeBuild(build_ext):
         #   BITWUZLA_INTERFACE=Off
         #   BOOST_INTERFACE=Off
         #
-        for arg, value in [('Z3_INTERFACE', 'On'), ('LLVM_INTERFACE', 'Off'), ('BITWUZLA_INTERFACE', 'Off'), ('BOOST_INTERFACE', 'Off')]:
+        for arg, value in [('Z3_INTERFACE', Z3_INTERFACE), ('LLVM_INTERFACE', LLVM_INTERFACE), ('BITWUZLA_INTERFACE', BITWUZLA_INTERFACE), ('BOOST_INTERFACE', BOOST_INTERFACE)]:
             if os.getenv(arg):
                 cmake_args += [f'-D{arg}=' + os.getenv(arg)]
             else:
@@ -130,9 +142,6 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DPYTHON_VERSION=' + os.getenv('PYTHON_VERSION')]
 
         # Custom Z3 paths.
-        if os.getenv('Z3_DIR'):
-            cmake_args += ['-DZ3_DIR=' + os.getenv('Z3_DIR')]
-            
         if os.getenv('Z3_LIBRARIES'):
             cmake_args += ['-DZ3_LIBRARIES=' + os.getenv('Z3_LIBRARIES')]
 
@@ -145,11 +154,7 @@ class CMakeBuild(build_ext):
 
         if os.getenv('BITWUZLA_INCLUDE_DIRS'):
             cmake_args += ['-DBITWUZLA_INCLUDE_DIRS=' + os.getenv('BITWUZLA_INCLUDE_DIRS')]
-
         # Custom Capstone paths.
-        if os.getenv('CAPSTONE_DIR'):
-            cmake_args += ['-DCAPSTONE_DIR=' + os.getenv('CAPSTONE_DIR')]
-            
         if os.getenv('CAPSTONE_LIBRARIES'):
             cmake_args += ['-DCAPSTONE_LIBRARIES=' + os.getenv('CAPSTONE_LIBRARIES')]
 
@@ -157,9 +162,6 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DCAPSTONE_INCLUDE_DIRS=' + os.getenv('CAPSTONE_INCLUDE_DIRS')]
 
         # Custom LLVM paths.
-        if os.getenv('LLVM_DIR'):
-            cmake_args += ['-DLLVM_DIR='+ os.getenv('LLVM_DIR')]
-
         if os.getenv('LLVM_LIBRARIES'):
             cmake_args += ['-DLLVM_LIBRARIES=' + os.getenv('LLVM_LIBRARIES')]
 
@@ -200,7 +202,7 @@ class CMakeBuild(build_ext):
             src_filename = os.path.join(self.build_temp + '/src/libtriton', 'libtriton.dylib')
             dst_filename = os.path.join(self.build_lib, os.path.basename(filename))
         elif platform.system() == "Windows":
-            src_filename = os.path.join(self.build_temp + '\\src\\libtriton\\', 'triton.pyd')
+            src_filename = os.path.join(self.build_temp + '/src/libtriton', 'triton.pyd')
             dst_filename = os.path.join(self.build_lib, os.path.basename(filename))
         else:
             raise Exception(f'Platform not supported: {platform.system()}')

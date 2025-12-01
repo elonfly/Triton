@@ -154,7 +154,7 @@ list(APPEND CMAKE_MODULE_PATH "${TRITON_ROOT}/CMakeModules/")
 # Find Z3
 if(Z3_INTERFACE)
     message(STATUS "Compiling with Z3 SMT solver")
-    find_package(Z3 CONFIG REQUIRED)
+    find_package(Z3 REQUIRED)
     message(STATUS "Z3 version: ${Z3_VERSION}")
     if(TARGET z3::libz3)
         link_libraries(z3::libz3)
@@ -199,7 +199,7 @@ endif()
 
 # Find Capstone
 message(STATUS "Compiling with Capstone")
-find_package(CAPSTONE 5 CONFIG REQUIRED)
+find_package(CAPSTONE 5 REQUIRED)
 message(STATUS "CAPSTONE version: ${CAPSTONE_VERSION}")
 if(TARGET capstone::capstone)
     link_libraries(capstone::capstone)
