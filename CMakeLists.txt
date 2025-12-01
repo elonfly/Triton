@@ -149,12 +149,12 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif()
 
 # Custom cmake search
-list(APPEND CMAKE_MODULE_PATH "${TRITON_ROOT}/CMakeModules/")
+#list(APPEND CMAKE_MODULE_PATH "${TRITON_ROOT}/CMakeModules/")
 
 # Find Z3
 if(Z3_INTERFACE)
     message(STATUS "Compiling with Z3 SMT solver")
-    find_package(Z3 REQUIRED)
+    find_package(Z3 CONFIG REQUIRED)
     message(STATUS "Z3 version: ${Z3_VERSION}")
     if(TARGET z3::libz3)
         link_libraries(z3::libz3)

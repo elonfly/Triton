@@ -24,7 +24,7 @@ VERSION_PATCH = 0
 RELEASE_CANDIDATE = 4
 
 BUILDTOOLS = "vs2022" # clang or clang_cl or vs2022
-CMAKE_BUILD_TYPE = "Release" # release or debug
+CMAKE_BUILD_TYPE = "Release" # Release or Debug
 
 VERSION = f'{VERSION_MAJOR}.{VERSION_MINOR}.{VERSION_PATCH}' + \
             f'rc{RELEASE_CANDIDATE}' if RELEASE_CANDIDATE else ''
@@ -101,16 +101,16 @@ class CMakeBuild(build_ext):
                 assert os.getenv('COMPILER_DIR'), "COMPILER_DIR(clang or clang_cl) env not found"
                 if BUILDTOOLS == "clang":
                     cmake_args += [
-                        "-DCMAKE_C_COMPILER=" +  os.getenv('COMPILER_DIR') + "clang.exe",
-                        "-DCMAKE_CXX_COMPILER=" +  os.getenv('COMPILER_DIR') + "clang++.exe",
-                        "-DCMAKE_RC_COMPILER=" +  os.getenv('COMPILER_DIR') + "llvm-rc.exe",
+                        "-DCMAKE_C_COMPILER=" +  os.getenv('COMPILER_DIR') + "/clang.exe",
+                        "-DCMAKE_CXX_COMPILER=" +  os.getenv('COMPILER_DIR') + "/clang++.exe",
+                        "-DCMAKE_RC_COMPILER=" +  os.getenv('COMPILER_DIR') + "/llvm-rc.exe",
                         "-G Ninja",
                     ]
                 if BUILDTOOLS == "clang_cl":
                     cmake_args += [
-                        "-DCMAKE_C_COMPILER= " +  os.getenv('COMPILER_DIR') + "clang-cl.exe",
-                        "-DCMAKE_CXX_COMPILER=" +  os.getenv('COMPILER_DIR') + "clang-cl.exe",
-                        "-DCMAKE_RC_COMPILER=" +  os.getenv('COMPILER_DIR') + "llvm-rc.exe",
+                        "-DCMAKE_C_COMPILER= " +  os.getenv('COMPILER_DIR') + "/clang-cl.exe",
+                        "-DCMAKE_CXX_COMPILER=" +  os.getenv('COMPILER_DIR') + "/clang-cl.exe",
+                        "-DCMAKE_RC_COMPILER=" +  os.getenv('COMPILER_DIR') + "/llvm-rc.exe",
                         "-G Ninja",
                     ]
         else:
@@ -149,7 +149,7 @@ class CMakeBuild(build_ext):
         # Custom Capstone paths.
         if os.getenv('CAPSTONE_DIR'):
             cmake_args += ['-DCAPSTONE_DIR=' + os.getenv('CAPSTONE_DIR')]
-
+            
         if os.getenv('CAPSTONE_LIBRARIES'):
             cmake_args += ['-DCAPSTONE_LIBRARIES=' + os.getenv('CAPSTONE_LIBRARIES')]
 
@@ -200,7 +200,7 @@ class CMakeBuild(build_ext):
             src_filename = os.path.join(self.build_temp + '/src/libtriton', 'libtriton.dylib')
             dst_filename = os.path.join(self.build_lib, os.path.basename(filename))
         elif platform.system() == "Windows":
-            src_filename = os.path.join(self.build_temp + '\\src\\libtriton\\'+ CMAKE_BUILD_TYPE, 'triton.pyd')
+            src_filename = os.path.join(self.build_temp + '\\src\\libtriton\\', 'triton.pyd')
             dst_filename = os.path.join(self.build_lib, os.path.basename(filename))
         else:
             raise Exception(f'Platform not supported: {platform.system()}')
