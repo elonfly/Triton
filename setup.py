@@ -130,6 +130,9 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DPYTHON_VERSION=' + os.getenv('PYTHON_VERSION')]
 
         # Custom Z3 paths.
+        if os.getenv('Z3_DIR'):
+            cmake_args += ['-DZ3_DIR=' + os.getenv('Z3_DIR')]
+            
         if os.getenv('Z3_LIBRARIES'):
             cmake_args += ['-DZ3_LIBRARIES=' + os.getenv('Z3_LIBRARIES')]
 
@@ -144,6 +147,9 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DBITWUZLA_INCLUDE_DIRS=' + os.getenv('BITWUZLA_INCLUDE_DIRS')]
 
         # Custom Capstone paths.
+        if os.getenv('CAPSTONE_DIR'):
+            cmake_args += ['-DCAPSTONE_DIR=' + os.getenv('CAPSTONE_DIR')]
+
         if os.getenv('CAPSTONE_LIBRARIES'):
             cmake_args += ['-DCAPSTONE_LIBRARIES=' + os.getenv('CAPSTONE_LIBRARIES')]
 
@@ -151,6 +157,9 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DCAPSTONE_INCLUDE_DIRS=' + os.getenv('CAPSTONE_INCLUDE_DIRS')]
 
         # Custom LLVM paths.
+        if os.getenv('LLVM_DIR'):
+            cmake_args += ['-DLLVM_DIR='+ os.getenv('LLVM_DIR')]
+
         if os.getenv('LLVM_LIBRARIES'):
             cmake_args += ['-DLLVM_LIBRARIES=' + os.getenv('LLVM_LIBRARIES')]
 
