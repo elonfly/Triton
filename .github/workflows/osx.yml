@@ -1,4 +1,4 @@
-name: Tests on OSX
+n me: Tests on OSX
 
 on: [push, pull_request, workflow_dispatch]
 
@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Deps
         run: |
-          brew install gmp pkgconfig ninja
+          brew install gmp pkgconfig ninja libiconv
 
       - name: Install Meson
         run: |
