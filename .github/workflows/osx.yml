@@ -1,4 +1,4 @@
-n me: Tests on OSX
+name: Tests on OSX
 
 on: [push, pull_request, workflow_dispatch]
 
