@@ -285,6 +285,33 @@ namespace triton {
             //! The LDARH semantics.
             void ldarh_s(triton::arch::Instruction& inst);
 
+            //! The LDAPR semantics.
+            void ldapr_s(triton::arch::Instruction& inst);
+
+            //! The LDAPRB semantics.
+            void ldaprb_s(triton::arch::Instruction& inst);
+
+            //! The LDAPRH semantics.
+            void ldaprh_s(triton::arch::Instruction& inst);
+
+            //! The LDAPUR semantics.
+            void ldapur_s(triton::arch::Instruction& inst);
+
+            //! The LDAPURB semantics.
+            void ldapurb_s(triton::arch::Instruction& inst);
+
+            //! The LDAPURH semantics.
+            void ldapurh_s(triton::arch::Instruction& inst);
+
+            //! The LDAPURSB semantics.
+            void ldapursb_s(triton::arch::Instruction& inst);
+
+            //! The LDAPURSH semantics.
+            void ldapursh_s(triton::arch::Instruction& inst);
+
+            //! The LDAPURSW semantics.
+            void ldapursw_s(triton::arch::Instruction& inst);
+
             //! The LDAXR semantics.
             void ldaxr_s(triton::arch::Instruction& inst);
 
@@ -470,6 +497,15 @@ namespace triton {
 
             //! The STLRH semantics.
             void stlrh_s(triton::arch::Instruction& inst);
+
+            //! The STLUR semantics.
+            void stlur_s(triton::arch::Instruction& inst);
+
+            //! The STLURB semantics.
+            void stlurb_s(triton::arch::Instruction& inst);
+
+            //! The STLURH semantics.
+            void stlurh_s(triton::arch::Instruction& inst);
 
             //! The STLXR semantics.
             void stlxr_s(triton::arch::Instruction& inst);

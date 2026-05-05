@@ -949,6 +949,18 @@ namespace triton {
               tritonId = triton::arch::arm::aarch64::ID_INS_LDAR;
               break;
 
+            case triton::extlibs::capstone::ARM64_INS_LDAPR:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPR;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_LDAPRB:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPRB;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_LDAPRH:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPRH;
+              break;
+
             case triton::extlibs::capstone::ARM64_INS_LDAXP:
               tritonId = triton::arch::arm::aarch64::ID_INS_LDAXP;
               break;
@@ -1047,6 +1059,30 @@ namespace triton {
 
             case triton::extlibs::capstone::ARM64_INS_LDURSW:
               tritonId = triton::arch::arm::aarch64::ID_INS_LDURSW;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_LDAPUR:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPUR;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_LDAPURB:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPURB;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_LDAPURH:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPURH;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_LDAPURSB:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPURSB;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_LDAPURSH:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPURSH;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_LDAPURSW:
+              tritonId = triton::arch::arm::aarch64::ID_INS_LDAPURSW;
               break;
 
             case triton::extlibs::capstone::ARM64_INS_LDXP:
@@ -1615,6 +1651,18 @@ namespace triton {
               tritonId = triton::arch::arm::aarch64::ID_INS_STLR;
               break;
 
+            case triton::extlibs::capstone::ARM64_INS_STLURB:
+              tritonId = triton::arch::arm::aarch64::ID_INS_STLURB;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_STLURH:
+              tritonId = triton::arch::arm::aarch64::ID_INS_STLURH;
+              break;
+
+            case triton::extlibs::capstone::ARM64_INS_STLUR:
+              tritonId = triton::arch::arm::aarch64::ID_INS_STLUR;
+              break;
+
             case triton::extlibs::capstone::ARM64_INS_STLXP:
               tritonId = triton::arch::arm::aarch64::ID_INS_STLXP;
               break;
@@ -2167,6 +2215,7 @@ namespace triton {
         triton::uint32 AArch64Specifications::getMemoryOperandSpecialSize(triton::uint32 id) const {
           switch (id) {
             case ID_INS_LDARB:
+            case ID_INS_LDAPRB:
             case ID_INS_LDAXRB:
             case ID_INS_LDRB:
             case ID_INS_LDRSB:
@@ -2174,8 +2223,11 @@ namespace triton {
             case ID_INS_LDTRSB:
             case ID_INS_LDURB:
             case ID_INS_LDURSB:
+            case ID_INS_LDAPURB:
+            case ID_INS_LDAPURSB:
             case ID_INS_LDXRB:
             case ID_INS_STLRB:
+            case ID_INS_STLURB:
             case ID_INS_STLXRB:
             case ID_INS_STRB:
             case ID_INS_STTRB:
@@ -2183,6 +2235,7 @@ namespace triton {
             case ID_INS_STXRB:
               return 1;
             case ID_INS_LDARH:
+            case ID_INS_LDAPRH:
             case ID_INS_LDAXRH:
             case ID_INS_LDRH:
             case ID_INS_LDRSH:
@@ -2190,8 +2243,11 @@ namespace triton {
             case ID_INS_LDTRSH:
             case ID_INS_LDURH:
             case ID_INS_LDURSH:
+            case ID_INS_LDAPURH:
+            case ID_INS_LDAPURSH:
             case ID_INS_LDXRH:
             case ID_INS_STLRH:
+            case ID_INS_STLURH:
             case ID_INS_STLXRH:
             case ID_INS_STRH:
             case ID_INS_STTRH:
@@ -2201,6 +2257,7 @@ namespace triton {
             case ID_INS_LDRSW:
             case ID_INS_LDTRSW:
             case ID_INS_LDURSW:
+            case ID_INS_LDAPURSW:
               return 4;
             default:
               return 0;
