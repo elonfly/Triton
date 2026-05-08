@@ -7566,7 +7566,7 @@ namespace triton {
         auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, pc, "Program Counter");
 
         /* Set condition flag */
-        if (!op1->evaluate().is_zero())
+        if (op1->evaluate().is_zero())
           inst.setConditionTaken(true);
 
         /* Spread taint */
@@ -7623,7 +7623,7 @@ namespace triton {
         auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, pc, "Program Counter");
 
         /* Set condition flag */
-        if (!op1->evaluate().is_zero())
+        if (op1->evaluate().is_zero())
           inst.setConditionTaken(true);
 
         /* Spread taint */
@@ -7983,7 +7983,7 @@ namespace triton {
         auto expr = this->symbolicEngine->createSymbolicExpression(inst, node, pc, "Program Counter");
 
         /* Set condition flag */
-        if (!op1->evaluate().is_zero())
+        if (op1->evaluate().is_zero())
           inst.setConditionTaken(true);
 
         /* Spread taint */
@@ -8383,33 +8383,33 @@ namespace triton {
         auto op2 = this->symbolicEngine->getOperandAst(inst, count);
 
         /* Create the semantics */
-        auto node1 = this->astCtxt->ite(
-                       this->astCtxt->equal(op2, this->astCtxt->bv(0, op2->getBitvectorSize())),
+        auto node1 = this->astCtxt->bvsub(op2, this->astCtxt->bv(1, op2->getBitvectorSize()));
+
+        /* Create symbolic expression */
+        auto expr1 = this->symbolicEngine->createSymbolicExpression(inst, node1, count, "LOOP counter operation");
+
+        /* Create the semantics */
+        auto node2 = this->astCtxt->ite(
+                       this->astCtxt->equal(node1, this->astCtxt->bv(0, node1->getBitvectorSize())),
                        this->astCtxt->bv(inst.getNextAddress(), pc.getBitSize()),
                        op1
                      );
 
         /* Create symbolic expression */
-        auto expr1 = this->symbolicEngine->createSymbolicExpression(inst, node1, pc, "Program Counter");
+        auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, node2, pc, "Program Counter");
 
         /* Set condition flag */
-        if (op2->evaluate()) {
+        if (node1->evaluate()) {
           inst.setConditionTaken(true);
           /* Spread taint */
-          expr1->isTainted = this->taintEngine->taintAssignment(pc, count);
+          expr2->isTainted = this->taintEngine->taintAssignment(pc, count);
         }
         else {
-          expr1->isTainted = this->taintEngine->taintAssignment(pc, src);
+          expr2->isTainted = this->taintEngine->taintAssignment(pc, src);
         }
 
-        /* Create the semantics */
-        auto node2 = this->astCtxt->bvsub(op2, this->astCtxt->bv(1, op2->getBitvectorSize()));
-
-        /* Create symbolic expression */
-        auto expr2 = this->symbolicEngine->createSymbolicExpression(inst, node2, count, "LOOP counter operation");
-
         /* Create the path constraint */
-        this->symbolicEngine->pushPathConstraint(inst, expr1);
+        this->symbolicEngine->pushPathConstraint(inst, expr2);
       }
 
 
